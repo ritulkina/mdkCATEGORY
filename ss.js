@@ -26,6 +26,7 @@ const add = document.getElementById("addBtn")
 const message = document.getElementById("message")
 
 const Open = document.getElementById("Open")
+const Done = document.getElementById("Done")
 const Category = document.getElementById("Category")
 const ticketsList = document.getElementById("ticketsList")
 
@@ -110,7 +111,7 @@ function renderTickets() {  //перерисовываеь список заяв
         const nItem = document.createElement("li")
         if (Open.checked && Category.value === "") {
             nItem.textContent = "Открытых заявок нет"
-        } else {
+        }else {
             nItem.textContent = "Нет заявок по выбранным фильтрам"
         }
         ticketsList.append(nItem)
@@ -122,22 +123,28 @@ add.addEventListener('click', () => {
     const room = roomInput.value.trim()
     const category = categoryS.value.trim()
     message.textContent = ""
-
-    if (titleInput.value !== "" && roomInput.value !== "" && categoryS.value !== "") {
-        const newTick = { title:  titleInput.value, room: roomInput.value, category: categoryS.value, done: false }
-        tickets.push(newTick)
-        titleInput.value = ""
-        roomInput.value = ""
-        categoryS.value = ""
-        cleanticketsList()
-        if (title === "") {
-            message.textContent = "Заполните поле"
-        } if (room === "") {
-            message.textContent = "Заполните поле"
-        } if (category === "")
-            message.textContent = "выберите категорию"
+    if (title === "" || room === "") {
+        message.textContent = "Заполните все текстовые поля"
         return
-
     }
+    if (category === "") {
+        message.textContent = "Выберите категорию"
+        return
+    }
+    const newTick = {
+        title: title,
+        room: room,
+        category: category,
+        done: false
+    }
+    tickets.push(newTick)
+    titleInput.value = ""
+    roomInput.value = ""
+    categoryS.value = ""
     renderTickets()
 })
+
+Open.addEventListener("change", renderTickets)
+Category.addEventListener("change", renderTickets)
+
+renderTickets()
