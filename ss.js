@@ -26,7 +26,6 @@ const add = document.getElementById("addBtn")
 const message = document.getElementById("message")
 
 const Open = document.getElementById("Open")
-const Done = document.getElementById("Done")
 const Category = document.getElementById("Category")
 const ticketsList = document.getElementById("ticketsList")
 
@@ -116,6 +115,7 @@ function renderTickets() {  //перерисовываеь список заяв
         }
         ticketsList.append(nItem)
     }
+
 }
 
 add.addEventListener('click', () => {
