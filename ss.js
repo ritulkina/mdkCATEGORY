@@ -25,6 +25,7 @@ const categoryS = document.getElementById("category")
 const add = document.getElementById("addBtn")
 const message = document.getElementById("message")
 
+const Close = document.getElementById("Close")
 const Open = document.getElementById("Open")
 const Category = document.getElementById("Category")
 const ticketsList = document.getElementById("ticketsList")
@@ -45,6 +46,9 @@ function renderTickets() {  //перерисовываеь список заяв
         const ticket = tickets[i]
 
         if (Open.checked && ticket.done) {
+            continue
+        }
+        if (Close.checked && !ticket.done) {
             continue
         }
 
@@ -108,9 +112,11 @@ function renderTickets() {  //перерисовываеь список заяв
 
     if (shownCount === 0) {
         const nItem = document.createElement("li")
-        if (Open.checked && Category.value === "") {
+        if (Close.checked && !Open.checked) {
+            nItem.textContent = "Выполненных заявок нет"
+        } else if (Open.checked && !Close.checked) {
             nItem.textContent = "Открытых заявок нет"
-        }else {
+        } else {
             nItem.textContent = "Нет заявок по выбранным фильтрам"
         }
         ticketsList.append(nItem)
@@ -146,5 +152,5 @@ add.addEventListener('click', () => {
 
 Open.addEventListener("change", renderTickets)
 Category.addEventListener("change", renderTickets)
-
+Close.addEventListener("change", renderTickets)
 renderTickets()
