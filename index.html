@@ -1,32 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="c.js" defer></script>
+    <title></title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
 </head>
 
 <body>
-    <div class="text">
-        <h1 class="z">Заявки корпуса</h1>
-        <div class="t">
-            <label class="cluchai" for="cluchaiName">Что случилось</label>
-            <input id="cluchaiName" type="text">
-        </div>
-        <div class="t">
-            <label class="where" for="whereName">Где</label>
-            <input id="whereName" type="text">
-        </div>
-        
-    </div>
-    <select id="Category">
-        <option value="">Оборудование</option>
-        <option value="">Аудитория</option>
-        <option value="">Коридор, 2-й этаж</option>
-    </select>
-    <button id="add" type="button">Добавить</button>
-</body>
+    <div class="container">
+        <h1>Заявки корпуса</h1>
 
+        <div class="formblock">
+            <div class="field">
+                <label for="title">Что случилось?</label>
+                <input type="text" id="title">
+            </div>
+
+            <div class="field">
+                <label for="room">Где?</label>
+                <input type="text" id="room">
+            </div>
+
+            <div class="field">
+                <label for="category">Категория</label>
+                <select id="category">
+                    <option value="">Выберите категорию</option>
+                    <option value="Оборудование">Оборудование</option>
+                    <option value="Аудитория">Аудитория</option>
+                    <option value="Другое">Другое</option>
+                </select>
+            </div>
+
+            <button id="add" type="button">Добавить заявку</button>
+            <p id="message" class="message"></p>
+        </div>
+
+        <div class="fblock">
+            <label>
+                <input type="checkbox" id="Open">
+                Только открытые
+            </label>
+
+            <div>
+                <label for="Category">Категория:</label>
+                <select id="Category">
+                    <option value="">Все категории</option>
+                    <option value="Оборудование">Оборудование</option>
+                    <option value="Аудитория">Аудитория</option>
+                    <option value="Другое">Другое</option>
+                </select>
+            </div>
+        </div>
+
+        <ul id="ticketsList" class="ticketslist"></ul>
+    </div>
+</body>
 </html>

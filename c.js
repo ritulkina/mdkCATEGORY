@@ -17,54 +17,133 @@ const tickets = [
         category: "Другое",
         done: true
     }
-]
+] 
 
-const titleInput = document.getElementById("title")
-const roomInput = document.getElementById("room")
-const categorySelect = document.getElementById("category")
-const add = document.getElementById("add")
-const message = document.getElementById("message")
+const titleInput = document.getElementById("title") //метод поиска элемента по его уникальному идентификатору
+const roomInput = document.getElementById("room") 
+const category = document.getElementById("category") 
+const add = document.getElementById("add") 
+const message = document.getElementById("message") 
 
-const Open = document.getElementById("Open")
-const Category = document.getElementById("Category")
-const ticketsList = document.getElementById("ticketsList")
+const Open = document.getElementById("Open") 
+const Category = document.getElementById("Category") 
+const ticketsList = document.getElementById("ticketsList") 
 
-function renderTickets() {
-    ticketsList.innerHTML = ""
+function renderTickets() {  //перерисовываеь список заявок на странице.
+    ticketsList.innerHTML = "" 
 
     if (tickets.length === 0) {
-        const Item = document.createElement("li")
-        Item.textContent = "Заявок пока нет"
-        ticketsList.append(Item)
-        return
+        const Item = document.createElement("li") 
+        Item.textContent = "Заявок пока нет" 
+        ticketsList.append(Item) 
+        return 
     }
 
-    let shownCount = 0;
+    let shownCount = 0 
 
     for (let i = 0; i < tickets.length; i++) {
-        const ticket = tickets[i]
+        const ticket = tickets[i] 
+
         if (Open.checked && ticket.done) {
-            continue
+            continue 
         }
 
         if (Category.value !== "" && ticket.category !== Category.value) {
-            continue
+            continue 
         }
 
-        shownCount++
+        shownCount++ 
 
-        const li = document.createElement("li")
-        li.className = "ticket-item"
+        const li = document.createElement("li") 
+        li.className = "ticketitem" 
 
-        const info = document.createElement("div")
-        info.className = "ticket-info"
+        const info = document.createElement("div") 
+        info.className = "ticketinfo" 
 
-        const titleEl = document.createElement("strong")
-        titleEl.textContent = ticket.title
+        const titleEl = document.createElement("strong") 
+        titleEl.textContent = ticket.title 
 
-        const detailsEl = document.createElement("span")
-        detailsEl.textContent = `Где: ${ticket.room} Категория: ${ticket.category}`
+        const detailsEl = document.createElement("span") 
+        detailsEl.textContent = `Где: ${ticket.room} Категория: ${ticket.category}` 
 
-        const actions = document.createElement("div")
-        actions.className = "ticket-actions"
+        const statusEl = document.createElement("span") 
+        if (ticket.done) {
+            statusEl.textContent = "Выполнена" 
+            statusEl.className = "statusdone" 
+        } else {
+            statusEl.textContent = "Открыта" 
+            statusEl.className = "statusopen" 
+        }
+
+        info.append(titleEl, detailsEl, statusEl) 
+
+        const actions = document.createElement("div") 
+        actions.className = "ticketactions" 
+
+        if (!ticket.done) {
+            const doneBtn = document.createElement("button") 
+            doneBtn.type = "button" 
+            doneBtn.className = "btndone" 
+            doneBtn.textContent = "Выполнить" 
+            doneBtn.addEventListener("click", function () {
+                tickets[i].done = true 
+                renderTickets() 
+            }) 
+            actions.append(doneBtn) 
+        }
+
+        const deleteBtn = document.createElement("button") 
+        deleteBtn.type = "button" 
+        deleteBtn.className = "btndelete" 
+        deleteBtn.textContent = "Удалить" 
+        deleteBtn.addEventListener("click", function () {
+            tickets.splice(i, 1) 
+            renderTickets() 
+        }) 
+        actions.append(deleteBtn) 
+
+        li.append(info, actions) 
+        ticketsList.append(li) 
     }
+
+    if (shownCount === 0) {
+        const nItem = document.createElement("li") 
+        if (Open.checked && Category.value === "") {
+            nItem.textContent = "Открытых заявок нет" 
+        } else {
+            nItem.textContent = "Нет заявок по выбранным фильтрам" 
+        }
+        ticketsList.append(nItem) 
+    }
+}
+
+addBtn.addEventListener("click", function () {
+    const title = titleInput.value.trim() 
+    const room = roomInput.value.trim() 
+    const category = category.value 
+
+    if (title === "" || room === "" || category === "") {
+        message.textContent = "Заполните все поля и выберите категорию" 
+        return 
+    }
+
+    message.textContent = "" 
+
+    tickets.push({
+        title: title,
+        room: room,
+        category: category,
+        done: false
+    }) 
+
+    titleInput.value = "" 
+    roomInput.value = "" 
+    categorySelect.value = "" 
+
+    renderTickets() 
+}) 
+
+Open.addEventListener("change", renderTickets) 
+Category.addEventListener("change", renderTickets) 
+
+renderTickets() 
